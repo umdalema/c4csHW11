@@ -8,9 +8,14 @@
 
 import Foundation
 
-let operators = {
-  //  '+' : (Double, Double) -> Double = +
-}
+// swift doesn't have an operators module like python does, so we're writing
+// closures in place of the operators.
+let operators = [
+    "+" : {(a:Double, b:Double) -> Double in return a + b},
+    "-" : {(a:Double, b:Double) -> Double in return a - b},
+    "*" : {(a:Double, b:Double) -> Double in return a * b},
+    "/" : {(a:Double, b:Double) -> Double in return a / b},
+]
 
 func calc(arg:String) -> Double
 {
@@ -27,10 +32,11 @@ func calc(arg:String) -> Double
         }
         else // the token is the operator value
         {
+            let op = operators[token]!
             let arg2 = stack.popLast()!
             let arg1 = stack.popLast()!
-            
-            stack.append(arg1 + arg2)
+
+            stack.append(op(arg1, arg2))
         }
     }
     return stack.popLast()!
